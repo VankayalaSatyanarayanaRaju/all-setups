@@ -5,9 +5,10 @@ sudo yum install wget -y
 sudo yum install java-17-amazon-corretto-devel -y
 sudo mkdir /app && cd /app
 sudo wget -O nexus.tar.gz https://download.sonatype.com/nexus/3/nexus-3.84.1-01-linux-x86_64.tar.gz
-sudo tar -xvf nexus-3.84.1-01-linux-x86_64.tar.gz
+sudo tar -xvf nexus.tar.gz
 sudo mv nexus-3.84.1-01 nexus
 sudo adduser nexus
+sudo mkdir -p /app/sonatype-work
 sudo chown -R nexus:nexus /app/nexus
 sudo chown -R nexus:nexus /app/sonatype-work
 sudo echo "run_as_user="nexus"" > /app/nexus/bin/nexus.rc
@@ -28,7 +29,8 @@ Restart=on-abort
 [Install]
 WantedBy=multi-user.target
 EOL
-sudo chkconfig nexus on
+sudo systemctl daemon-reload 
+sudo systemctl enable nexus
 sudo systemctl start nexus
 sudo systemctl status nexus
 
